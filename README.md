@@ -19,6 +19,22 @@ method: GET
 |`latex`|str|the code you need to compile|
 |`border`|float|(OPTIONAL)the border control for standalone, 0 by default|
 
+# deploy
+
+install fastapi and unvicorn:
+
+```bash
+pip install fastapi
+pip install unvicorn
+```
+
+run the script:
+
+```bash
+uvicorn main:app --reload
+```
+
+
 # undone checklist
 
-- [ ] ComPileTwice: for some circumstances that requires a second compilation. (e.g. macro, polymer)
+- [ ] CompileTwice: for some circumstances that requires a second compilation. (e.g. macro, polymer)
