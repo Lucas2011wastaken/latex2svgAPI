@@ -15,9 +15,10 @@ method: GET
 
 |Parameter|type|comments|
 |:--:|:--:|:---|
-|`token`|str|a string to distinguish diffrent users|
-|`latex`|str|the code you need to compile|
+|`token`|str|a string to distinguish diffrent users, plz configure it in `user.json`|
+|`latex`|str|the code you need to compile, plz carefully check if you need to warp it with `$`(e.g. `\LaTeX`don't need `$`)|
 |`border`|float|(OPTIONAL)the border control for standalone, 0 by default|
+|`twicecompile`|bool|(OPTIONAL)for some circumstances that requires a second compilation. (e.g. macro, polymer) False by default|
 
 # deploy
 
@@ -37,4 +38,5 @@ uvicorn main:app --reload
 
 # undone checklist
 
-- [ ] CompileTwice: for some circumstances that requires a second compilation. (e.g. macro, polymer)
+- [x] CompileTwice: for some circumstances that requires a second compilation. (e.g. macro, polymer)
+- [x] RecordUsage: record the usage for users

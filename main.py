@@ -2,25 +2,39 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 import os
 import time
-
-UserToken = ["gzgz"]
+import json
+import subprocess
+import re
 
 app = FastAPI()
 
 @app.get("/")
-async def main(token:str = "null",twisecomplie:bool = False,latex:str = "LaTeX",border:float = 0):
+async def main(token:str = "null",twicecompile:bool = False,latex:str = "\\LaTeX",border:float = 0):
 
-    # 检查用户是否注册
-    global UserToken
-    if not token in UserToken:
+    # 检查用户是否注册，并记录使用量
+    with open("user.json","r") as file:
+        userjson = json.load(file)
+
+    allusertoken = list(userjson.keys())
+
+    if not token in allusertoken:
         return {"error": "Unauthorised"}
     
+    if int(userjson[token]["maxusage"]) != -1:
+        if int(userjson[token]["currentusage"]) > int(userjson[token]["maxusage"]):
+            return {"error": "InsufficientUsage"}
+        
+    userjson[token]["currentusage"] += 1
+
+    with open("user.json","w") as file:
+        json.dump(userjson,file,indent=4)
+
     # 创建一个临时工作文件夹
     current_folder = "cache/" + str(time.time())
     os.system("mkdir " + current_folder)
 
     # 处理用户的latex、添加最小工作示例、保存到input.tex
-    latexinput = "\\documentclass[10pt]{standalone}\n\\usepackage{tikz}\n\\usepackage{chemfig}\n\\usepackage[UTF8]{ctex}\n\\usepackage[version=4]{mhchem}\n\\usetikzlibrary{intersections,calc,backgrounds,knots}\n\\standaloneconfig{border=" + str(border) + "}\n\\begin{document}\n\n$\n" + latex + "\n$\n\n\\end{document}"
+    latexinput = "\\documentclass[10pt]{standalone}\n\\usepackage{tikz}\n\\usepackage{chemfig}\n\\usepackage[UTF8]{ctex}\n\\usepackage[version=4]{mhchem}\n\\usetikzlibrary{intersections,calc,backgrounds,knots}\n\\standaloneconfig{border=" + str(border) + "}\n\\begin{document}\n\n" + latex + "\n\n\\end{document}"
 
     os.system("touch " + current_folder + "/latexinput.tex")
 
@@ -28,7 +42,54 @@ async def main(token:str = "null",twisecomplie:bool = False,latex:str = "LaTeX",
         file.write(latexinput)
 
     # 调用xelatex进行编译得到pdf
-    os.system("xelatex -output-directory=" + current_folder + " " + current_folder + "/latexinput.tex")
+    os.chdir(current_folder)
+    try:
+        # 调用xelatex命令，捕获标准输出和错误输出
+        subprocess.run(
+            ['xelatex', '-interaction=nonstopmode', "latexinput.tex"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,  # 将标准错误合并到标准输出
+            check=True,                # 如果返回码非零则抛出异常
+            text=True                  # 以文本形式返回输出内容
+        )
+    except subprocess.CalledProcessError as e:
+        # 捕获子进程错误，包含返回码和输出内容
+        os.chdir("..")
+        os.chdir("..")
+        matches = re.findall(r'\n(!.*?)\n', e.stdout)
+        
+        error_details = {
+        "error": "LaTeXCompileFault",
+        "returncode": e.returncode,
+        "detail": "\n".join(matches)
+        }
+        return error_details
+    # 二次编译（如果需要）
+    if twicecompile == True:
+        try:
+            # 调用xelatex命令，捕获标准输出和错误输出
+            subprocess.run(
+                ['xelatex', '-interaction=nonstopmode', "latexinput.tex"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,  # 将标准错误合并到标准输出
+                check=True,                # 如果返回码非零则抛出异常
+                text=True                  # 以文本形式返回输出内容
+            )
+        except subprocess.CalledProcessError as e:
+            # 捕获子进程错误，包含返回码和输出内容
+            os.chdir("..")
+            os.chdir("..")
+            matches = re.findall(r'\n(!.*?)\n', e.stdout)
+        
+            error_details = {
+            "error": "LaTeXCompileFault",
+            "returncode": e.returncode,
+            "detail": "\n".join(matches)
+            }
+            return error_details
+    os.chdir("..")
+    os.chdir("..")
+    
 
     # 调用pdf2svg
     os.system("pdf2svg " + current_folder + "/latexinput.pdf" + " " + current_folder + "/latexoutput.svg")

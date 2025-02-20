@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2025.2.2)  19 FEB 2025 23:21
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2025.2.2)  20 FEB 2025 12:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**cache/1739978497.7302454/latexinput.tex
-(./cache/1739978497.7302454/latexinput.tex
+**latexinput.tex
+(./latexinput.tex
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
 (/usr/local/texlive/2024/texmf-dist/tex/latex/standalone/standalone.cls
@@ -837,19 +837,19 @@ Package chemgreek Info: Activating mapping `fontspec' on line 8.
 
 [1
 
-] (cache/1739978497.7302454/latexinput.aux)
+] (./latexinput.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2022/07/14>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 22601 strings out of 473840
- 546624 string characters out of 5729725
- 950767 words of memory out of 5000000
- 45324 multiletter control sequences out of 15000+600000
+ 22482 strings out of 473840
+ 543530 string characters out of 5729725
+ 940910 words of memory out of 5000000
+ 45206 multiletter control sequences out of 15000+600000
  561021 words of font info for 51 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 102i,6n,112p,907b,675s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 102i,5n,112p,420b,278s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on cache/1739978497.7302454/latexinput.pdf (1 page).
+Output written on latexinput.pdf (1 page).
