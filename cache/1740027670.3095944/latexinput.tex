@@ -1,0 +1,12 @@
+\documentclass[10pt]{standalone}
+\usepackage{tikz}
+\usepackage{chemfig}
+\usepackage[UTF8]{ctex}
+\usepackage[version=4]{mhchem}
+\usetikzlibrary{intersections,calc,backgrounds,knots}
+\standaloneconfig{border=0.0}
+\begin{document}
+
+$ \ce{Z }\left[\chemfig{[,0.6] W(-[:120]M)(-[4]M)(-[:-120]M)-[@{left,0.5}:-30,0.8]W(-[2]M)(-[6]M)-[@{right,0.5}:30,0.8]X-[2]Y(=[0]X)(=[4]X)-[2]X}\right]^- \polymerdelim[delimiters={()},height=2pt, depth=5pt, indice=n]{left}{right} $
+
+\end{document}
