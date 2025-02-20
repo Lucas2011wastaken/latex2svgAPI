@@ -59,11 +59,6 @@ pip install fastapi
 pip install unvicorn
 ```
 
-run the script:
-
-```bash
-uvicorn main:app --reload
-```
 configure the `user.json` file. example is given below:
 
 ```json
@@ -75,7 +70,14 @@ configure the `user.json` file. example is given below:
 }
 ```
 
-"gzgz" is where your token goes.
+"gzgz" is where the token goes.
+
+
+run the script:
+
+```bash
+uvicorn main:app --reload
+```
 
 # undone checklist
 
