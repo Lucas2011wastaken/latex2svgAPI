@@ -83,3 +83,4 @@ python3 main.py
 
 - [x] CompileTwice: for some circumstances that requires a second compilation. (e.g. macro, polymer)
 - [x] RecordUsage: record the usage for users
+- [ ] ToDoList: a todo list was left behind in school lol
