@@ -30,6 +30,9 @@ method: GET
 - `{"error": "InsufficientUsage"}`: the token you were using is out of usage. plz re-configure `maxusage` in `user.json`.
 - `{"error": "LaTeXCompileFault"}`: your LaTeX sytnex has something wrong. details are given below.
 - `{"error": "File not found"}`:cannot found svg to return.plz check your pdf2svg installation.
+
+## examples
+
 # deploy
 
 install fastapi and unvicorn:
