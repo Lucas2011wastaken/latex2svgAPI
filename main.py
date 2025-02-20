@@ -34,7 +34,7 @@ async def main(token:str = "null",twicecompile:bool = False,latex:str = "\\LaTeX
     os.system("mkdir " + current_folder)
 
     # 处理用户的latex、添加最小工作示例、保存到input.tex
-    latexinput = "\\documentclass[10pt]{standalone}\n\\usepackage{tikz}\n\\usepackage{chemfig}\n\\usepackage[UTF8]{ctex}\n\\usepackage[version=4]{mhchem}\n\\usetikzlibrary{intersections,calc,backgrounds,knots}\n\\standaloneconfig{border=" + str(border) + "}\n\\begin{document}\n\n" + latex + "\n\n\\end{document}"
+    latexinput = "\\documentclass[10pt]{standalone}\n\\usepackage{amsmath}\n\\usepackage{amsthm}\n\\usepackage{amsfonts}\n\\usepackage{amssymb}\n\\usepackage{amstext}\n\\usepackage{tikz}\n\\usepackage{chemfig}\n\\usepackage[UTF8]{ctex}\n\\usepackage[version=4]{mhchem}\n\\usetikzlibrary{intersections,calc,backgrounds,knots}\n\\standaloneconfig{border=" + str(border) + "}\n\\begin{document}\n\n" + latex + "\n\n\\end{document}"
 
     os.system("touch " + current_folder + "/latexinput.tex")
 
