@@ -26,10 +26,10 @@ success:
 ˋlatexout.svg`
 
 failure:
-`{"error": "Unauthorised"}`: token not recoganised. plz configure in `user.json`.
-`{"error": "InsufficientUsage"}`: the token you were using is out of usage. plz re-configure `maxusage` in `user.json`.
-`{"error": "LaTeXCompileFault"}`: your LaTeX sytnex has something wrong. details are given below.
-`{"error": "File not found"}`:cannot found svg to return.plz check your pdf2svg installation.
+- `{"error": "Unauthorised"}`: token not recoganised. plz configure in `user.json`.
+- `{"error": "InsufficientUsage"}`: the token you were using is out of usage. plz re-configure `maxusage` in `user.json`.
+- `{"error": "LaTeXCompileFault"}`: your LaTeX sytnex has something wrong. details are given below.
+- `{"error": "File not found"}`:cannot found svg to return.plz check your pdf2svg installation.
 # deploy
 
 install fastapi and unvicorn:
@@ -55,7 +55,7 @@ configure the `user.json` file. example is given below:
 }
 ```
 
-"gzgz" is your token.
+"gzgz" is where your token goes.
 
 # undone checklist
 
