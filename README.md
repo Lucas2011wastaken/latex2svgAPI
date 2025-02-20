@@ -14,7 +14,7 @@ used package: chemfig,mhchem,ctex,tikz
 # calling the API
 
 method: GET
-port:8000
+port:11451
 
 |Parameter|type|comments|
 |:--:|:--:|:---|
@@ -37,7 +37,7 @@ port:8000
 ## examples
 
 ```
-http://www.example.com:8000/?token=gzgz&twicecompile=true&latex=$ \ce{Z }\left[\chemfig{[,0.6] W(-[:120]M)(-[4]M)(-[:-120]M)-[@{left,0.5}:-30,0.8]W(-[2]M)(-[6]M)-[@{right,0.5}:30,0.8]X-[2]Y(=[0]X)(=[4]X)-[2]X}\right]^- \polymerdelim[delimiters={()},height=2pt, depth=5pt, indice=n]{left}{right} $
+http://www.example.com:11451/?token=gzgz&twicecompile=true&latex=$ \ce{Z }\left[\chemfig{[,0.6] W(-[:120]M)(-[4]M)(-[:-120]M)-[@{left,0.5}:-30,0.8]W(-[2]M)(-[6]M)-[@{right,0.5}:30,0.8]X-[2]Y(=[0]X)(=[4]X)-[2]X}\right]^- \polymerdelim[delimiters={()},height=2pt, depth=5pt, indice=n]{left}{right} $
 
 ```
 
@@ -45,7 +45,7 @@ result:
 ![](https://raw.githubusercontent.com/Lucas2011wastaken/latex2svgAPI/refs/heads/main/cache/1740027670.3095944/latexoutput.svg)
 
 ```
-http://www.example.com:8000/?token=gzgz
+http://www.example.com:11451/?token=gzgz
 ```
 
 result:
@@ -76,7 +76,7 @@ configure the `user.json` file. example is given below:
 run the script:
 
 ```bash
-uvicorn main:app --reload
+python3 main.py
 ```
 
 # undone checklist
