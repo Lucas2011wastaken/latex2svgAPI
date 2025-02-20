@@ -4,6 +4,8 @@ a simple python script that allows user to compile LaTeX and get a SVG output vi
 recommended platform: Linux
 > for its fast LaTeX compilation
 
+used package: chemfig,mhchem,ctex,tikz
+
 **IMPORTANT: THIS API REQUIRES THE FOLLOWING APPLICATIONS INSTALLED ON THE SERVER**
 - [xelatex](https://tug.org/texlive/)
 - [pdf2svg](https://github.com/dawbarton/pdf2svg)
@@ -24,7 +26,7 @@ port:8000
 ## result:
 
 ### success:
-ˋlatexout.svg`
+`latexout.svg`
 
 ### failure:
 - `{"error": "Unauthorised"}`: token not recoganised. plz configure in `user.json`.
