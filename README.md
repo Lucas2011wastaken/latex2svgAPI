@@ -20,12 +20,12 @@ method: GET
 |`border`|float|(OPTIONAL)the border control for standalone, 0 by default|
 |`twicecompile`|bool|(OPTIONAL)for some circumstances that requires a second compilation. (e.g. macro, polymer) False by default|
 
-result:
+## result:
 
-success:
+### success:
 ˋlatexout.svg`
 
-failure:
+### failure:
 - `{"error": "Unauthorised"}`: token not recoganised. plz configure in `user.json`.
 - `{"error": "InsufficientUsage"}`: the token you were using is out of usage. plz re-configure `maxusage` in `user.json`.
 - `{"error": "LaTeXCompileFault"}`: your LaTeX sytnex has something wrong. details are given below.
