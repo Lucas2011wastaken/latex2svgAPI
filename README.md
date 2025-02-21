@@ -22,6 +22,7 @@ port:4000
 |`latex`|str|the code you need to compile, plz carefully check if you need to warp it with `$`(e.g. `\LaTeX`don't required `$`)|
 |`border`|float|(OPTIONAL)the border control for standalone, 0 by default|
 |`twicecompile`|bool|(OPTIONAL)for some circumstances that requires a second compilation. (e.g. macro, polymer) False by default|
+|`superiorcacheid`|str|(OPTIONAL)the unique "name" to the SVG when caching the superior users' SVG file.(explanation witten bellow)|
 
 ## result:
 
@@ -64,13 +65,16 @@ configure the `user.json` file. example is given below:
 ```json
 {
     "gzgz": {
-        "currentusage": 26,
-        "maxusage": -1
+        "currentusage": 49,
+        "maxusage": -1,
+        "superior": true
     }
 }
 ```
 
 "gzgz" is where the token goes.
+
+if a user is configured as a superior in `user.json`, the user can access to an extra cache zone, where the output SVG is cached specifically. So that when user call with the same `superiorcacheid` once again, the API will return the superior cache directly to optimise latency issues.
 
 
 run the script:
