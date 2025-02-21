@@ -18,7 +18,10 @@ app.add_middleware(
 )
 
 @app.get("/")
-async def main(token:str = "null",twicecompile:bool = False,latex:str = "\\LaTeX",border:float = 0):
+async def main(token:str = "null",superiorcacheid:str = "null",twicecompile:bool = False,latex:str = "\\LaTeX",border:float = 0):
+
+    if not os.path.exists("superiorcache"):
+        os.mkdir("superiorcache")
 
     # 检查用户是否注册，并记录使用量
     with open("user.json","r") as file:
@@ -29,11 +32,15 @@ async def main(token:str = "null",twicecompile:bool = False,latex:str = "\\LaTeX
     if not token in allusertoken:
         return {"error": "Unauthorised"}
     
-    if int(userjson[token]["maxusage"]) != -1:
-        if int(userjson[token]["currentusage"]) > int(userjson[token]["maxusage"]):
+    if int(userjson[token]["maxusage"]) != -1 and int(userjson[token]["currentusage"]) > int(userjson[token]["maxusage"]):
             return {"error": "InsufficientUsage"}
         
     userjson[token]["currentusage"] += 1
+
+    # 为superior用户调用superiorcache
+    if userjson[token]["superior"] == True and superiorcacheid != "null":
+        if os.path.exists("superiorcache/" + token + "/" + superiorcacheid + ".svg"):
+            return FileResponse("superiorcache/" + token + "/" + superiorcacheid + ".svg", media_type="image/svg+xml")
 
     with open("user.json","w") as file:
         json.dump(userjson,file,indent=4)
@@ -102,6 +109,12 @@ async def main(token:str = "null",twicecompile:bool = False,latex:str = "\\LaTeX
 
     # 调用pdf2svg
     os.system("pdf2svg " + current_folder + "/latexinput.pdf" + " " + current_folder + "/latexoutput.svg")
+
+    # 为superior用户创建superiorcache
+    if userjson[token]["superior"] == True and superiorcacheid != "null":
+        if not os.path.exists("superiorcache/" + token):
+            os.mkdir("superiorcache/" + token)
+        os.system("cp " + current_folder + "/latexoutput.svg" + " " + "superiorcache/" + token + "/" + superiorcacheid + ".svg")
 
     # 输出svg
     output_path = current_folder + "/latexoutput.svg"
