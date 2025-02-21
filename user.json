@@ -1,6 +1,7 @@
 {
     "gzgz": {
-        "currentusage": 37,
-        "maxusage": -1
+        "currentusage": 49,
+        "maxusage": -1,
+        "superior": true
     }
 }
