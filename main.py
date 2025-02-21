@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 import os
 import time
 import json
@@ -7,6 +8,14 @@ import subprocess
 import re
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 async def main(token:str = "null",twicecompile:bool = False,latex:str = "\\LaTeX",border:float = 0):
@@ -102,5 +111,7 @@ async def main(token:str = "null",twicecompile:bool = False,latex:str = "\\LaTeX
 
 # 启动 FastAPI 应用程序
 if __name__ == "__main__":
+    os.system("rm -rf cache/")
+    os.system("mkdir cache")
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=11451)
+    uvicorn.run(app, host="0.0.0.0", port=4000)
