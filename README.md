@@ -37,9 +37,10 @@ port:4000
 
 ## examples
 
+> HTTPS is configured seperately. On the example server, it's enabled.If you don't want to configure a HTTPS(although it's recommended to), replace <code>https</code> with <code>http</code> in the following instead.
+
 ```
 https://www.example.com:4000/?token=gzgz&twicecompile=true&latex=$ \ce{Z }\left[\chemfig{[,0.6] W(-[:120]M)(-[4]M)(-[:-120]M)-[@{left,0.5}:-30,0.8]W(-[2]M)(-[6]M)-[@{right,0.5}:30,0.8]X-[2]Y(=[0]X)(=[4]X)-[2]X}\right]^- \polymerdelim[delimiters={()},height=2pt, depth=5pt, indice=n]{left}{right} $
-
 ```
 
 result:
