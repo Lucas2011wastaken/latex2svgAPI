@@ -111,3 +111,4 @@ python3 main.py
 - [x] RecordUsage: record the usage for users
 - [ ] Update`README.md`: add a part that demonstrate feature
 - [ ] Finish`/superiorcache?action=delete`: new feture that allows users to manage their superiorcache
+- [ ] TryUserEndCache: it seems that you can do this... I'm not sure.Require more ivestigation.
