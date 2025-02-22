@@ -58,7 +58,7 @@ https://www.example.com:4000/?token=gzgz&superiorcacheid=benzene
 
 result:
 
-**THIS ONE IS NOT RECOMMENDED TO USE UNLESS YOU KNOW WHAT YOU ARE DOING.** The server will return the superiorcache whose ID is "benzene" IF EXIST. Otherwise it will return <object data="https://raw.githubusercontent.com/Lucas2011wastaken/latex2svgAPI/refs/heads/main/cache/1740027512.4471781/latexoutput.svg" width="30" height="30"></object> caused by the default in put of parameter `latex`.
+**THIS ONE IS NOT RECOMMENDED TO USE UNLESS YOU KNOW WHAT YOU ARE DOING.** The server will return the superiorcache whose ID is "benzene" IF EXIST. Otherwise it will return ![](https://raw.githubusercontent.com/Lucas2011wastaken/latex2svgAPI/refs/heads/main/cache/1740027512.4471781/latexoutput.svg) caused by the default in put of parameter `latex`.
 
 # `"/superiorcache"`
 
