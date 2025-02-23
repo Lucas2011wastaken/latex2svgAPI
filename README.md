@@ -71,6 +71,20 @@ method: GET
 |`token`|str|a string to distinguish diffrent users, plz configure it in `user.json`.|
 |`action`|str|`list` or `delete`. `list` will return a table showing all your superiorcache; `delete` is not completed yet. plz stay tuned.|
 
+## success: `action=list`
+
+List all available superiorchache in a web page.
+
+## success: `action=delete`
+
+`delete` is not completed yet. plz stay tuned.
+
+## failure:
+- `{"error": "Unauthorised"}`: token not recoganised. plz configure in `user.json`.
+- `{"error": "InsufficientUsage"}`: the token you were using is out of usage. plz re-configure `maxusage` in `user.json`.
+- `{"error": "InvalidAction"}`: acion you requested is not on the support list, plz check your spellings.
+
+
 # deploy
 
 install [xelatex](https://tug.org/texlive/) and [pdf2svg](https://github.com/dawbarton/pdf2svg).
