@@ -189,8 +189,9 @@ async def get_superior_cache(action:str = "null", token:str = "null", superiorca
                 error_details = {"success": "FileDeleted " + superiorcacheid + ".svg"}
                 return error_details
             except Exception as e:
-                error_details = {"error": e}
-                return error_details
+                return {"error": "DeletionFailed"}
+        else:
+            return {"error": "FileNotFound"}
 
 # 启动 FastAPI 应用程序
 if __name__ == "__main__":
