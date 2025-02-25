@@ -123,7 +123,7 @@ async def main(token:str = "null",superiorcacheid:str = "null",twicecompile:bool
     return FileResponse(output_path, media_type="image/svg+xml")
 
 @app.get("/superiorcache")
-async def get_superior_cache(action:str = "null", token:str = "null"):
+async def get_superior_cache(action:str = "null", token:str = "null", superiorcacheid:str = "null"):
     #读取用户列表
     with open("user.json","r") as file:
         userjson = json.load(file)
@@ -172,19 +172,25 @@ async def get_superior_cache(action:str = "null", token:str = "null"):
             for file in os.listdir(f"superiorcache/{token}"):
                 match = re.match(r'^(.*?)\.svg', file)
                 if match:
-                    superiorcacheid = match.group(1)
+                    temp_superiorcacheid = match.group(1)
                     html_content += f"""
             <tr>
-                <td>{superiorcacheid}</td>
-                <td><img src="/?token={token}&superiorcacheid={superiorcacheid}"></td>
+                <td>{temp_superiorcacheid}</td>
+                <td><img src="/?token={token}&superiorcacheid={temp_superiorcacheid}"></td>
             </tr>"""
         html_content += """</table></body></html>"""
 
         return Response(content=html_content, media_type="text/html")
-
-
     elif action == "delete":
-        return {"info": "Haven't finished yet, stay tuned."}
+        # 判断请求的文件是否存在
+        if os.path.exists(f"superiorcache/{token}/{superiorcacheid}.svg"):
+            try:
+                os.remove(f"superiorcache/{token}/{superiorcacheid}.svg")
+                error_details = {"success": "FileDeleted " + superiorcacheid + ".svg"}
+                return error_details
+            except Exception as e:
+                error_details = {"error": e}
+                return error_details
 
 # 启动 FastAPI 应用程序
 if __name__ == "__main__":
