@@ -158,10 +158,19 @@ async def get_superior_cache(action:str = "null", token:str = "null", superiorca
             th, td {border: 1px solid #ddd; padding: 8px; text-align: left;}
             tr:nth-child(even) {background-color: #f2f2f2;}
             img {max-width: 200px; max-height: 200px;}
+            code, tt {
+            padding: .2em .4em;
+            margin: 0;
+            font-size: 85%;
+            background-color: #656c7633;
+            white-space: break-spaces;
+            border-radius: 6px;
+}
         </style>
-    </head>
+    </head>"""
+        html_content += f"""
     <body>
-        <h2>SVG Files in Directory</h2>
+        <h2>SVG Files under <code>{token}</code></h2>
         <table>
             <tr><th>SuperiorCacheID</th><th>Preview</th></tr>"""
 
