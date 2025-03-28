@@ -1,3 +1,4 @@
+from curses.ascii import isblank
 from fastapi import FastAPI, Response
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -17,8 +18,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+def IsIDValid(id:str):
+    if id == "":
+        return False
+    elif id.isspace():
+        return False
+    elif bool(set(id) & {"/","?",".","\\","@","#","$","&","(",")","|",":","*",";","<",">","\""}):
+        return False
+    else:
+        return True
+
 @app.get("/")
-async def main(token:str = "null",superiorcacheid:str = "null",twicecompile:bool = False,latex:str = "\\LaTeX",border:float = 0):
+async def main(token:str = "",superiorcacheid:str = "",twicecompile:bool = False,latex:str = "\\LaTeX",border:float = 0):
 
     if not os.path.exists("superiorcache"):
         os.mkdir("superiorcache")
@@ -34,13 +45,13 @@ async def main(token:str = "null",superiorcacheid:str = "null",twicecompile:bool
     
     if int(userjson[token]["maxusage"]) != -1 and int(userjson[token]["currentusage"]) > int(userjson[token]["maxusage"]):
         return {"error": "InsufficientUsage"}
-        
-    userjson[token]["currentusage"] += 1
 
     # 为superior用户调用superiorcache
-    if userjson[token]["superior"] == True and superiorcacheid != "null":
+    if userjson[token]["superior"] == True and IsIDValid(superiorcacheid):
         if os.path.exists("superiorcache/" + token + "/" + superiorcacheid + ".svg"):
             return FileResponse("superiorcache/" + token + "/" + superiorcacheid + ".svg", media_type="image/svg+xml")
+        
+    userjson[token]["currentusage"] += 1
 
     with open("user.json","w") as file:
         json.dump(userjson,file,indent=4)
@@ -111,7 +122,7 @@ async def main(token:str = "null",superiorcacheid:str = "null",twicecompile:bool
     os.system("pdf2svg " + current_folder + "/latexinput.pdf" + " " + current_folder + "/latexoutput.svg")
 
     # 为superior用户创建superiorcache
-    if userjson[token]["superior"] == True and superiorcacheid != "null":
+    if userjson[token]["superior"] == True and IsIDValid(superiorcacheid):
         if not os.path.exists("superiorcache/" + token):
             os.mkdir("superiorcache/" + token)
         os.system("cp " + current_folder + "/latexoutput.svg" + " " + "superiorcache/" + token + "/" + superiorcacheid + ".svg")
@@ -123,7 +134,7 @@ async def main(token:str = "null",superiorcacheid:str = "null",twicecompile:bool
     return FileResponse(output_path, media_type="image/svg+xml")
 
 @app.get("/superiorcache")
-async def get_superior_cache(action:str = "null", token:str = "null", superiorcacheid:str = "null"):
+async def get_superior_cache(action:str = "", token:str = "", superiorcacheid:str = ""):
     #读取用户列表
     with open("user.json","r") as file:
         userjson = json.load(file)
@@ -154,6 +165,7 @@ async def get_superior_cache(action:str = "null", token:str = "null", superiorca
     <head>
         <title>SVG Files List</title>
         <style>
+            @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100;src:local("JetBrains Mono Thin"),local("JetBrainsMono-Thin"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Thin.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:100;src:local("JetBrains Mono Thin Italic"),local("JetBrainsMono-ThinItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-ThinItalic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:200;src:local("JetBrains Mono ExtraLight"),local("JetBrainsMono-ExtraLight"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-ExtraLight.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:200;src:local("JetBrains Mono ExtraLight Italic"),local("JetBrainsMono-ExtraLightItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-ExtraLightItalic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:300;src:local("JetBrains Mono Light"),local("JetBrainsMono-Light"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Light.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:300;src:local("JetBrains Mono Light Italic"),local("JetBrainsMono-LightItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-LightItalic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400;src:local("JetBrains Mono Regular"),local("JetBrainsMono-Regular"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Regular.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:400;src:local("JetBrains Mono Italic"),local("JetBrainsMono-Italic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Italic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:500;src:local("JetBrains Mono Medium"),local("JetBrainsMono-Medium"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Medium.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:500;src:local("JetBrains Mono Medium Italic"),local("JetBrainsMono-MediumItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-MediumItalic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:700;src:local("JetBrains Mono Bold"),local("JetBrainsMono-Bold"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Bold.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:700;src:local("JetBrains Mono Bold Italic"),local("JetBrainsMono-BoldItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-BoldItalic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:800;src:local("JetBrains Mono ExtraBold"),local("JetBrainsMono-ExtraBold"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-ExtraBold.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:800;src:local("JetBrains Mono ExtraBold Italic"),local("JetBrainsMono-ExtraBoldItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-ExtraBoldItalic.woff2") format("woff2");font-display:swap}
             table {border-collapse: collapse; width: 100%;}
             th, td {border: 1px solid #ddd; padding: 8px; text-align: left;}
             tr:nth-child(even) {background-color: #f2f2f2;}
@@ -165,6 +177,7 @@ async def get_superior_cache(action:str = "null", token:str = "null", superiorca
             background-color: #656c7633;
             white-space: break-spaces;
             border-radius: 6px;
+            font-family: 'JetBrains Mono';
 }
         </style>
     </head>"""

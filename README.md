@@ -32,6 +32,8 @@ Extra cache zone for certain user(s). By specifying a `superiorcacheid`, it will
 
 The superiorcache can be managed(list, delete) easily.
 
+`superiorcacheid` can't contain illegal characters(i.e. `/?.\@#$&()|:*;<>"`).
+
 ## User control
 
 By configuring in `user.json`, you can run your API for certain users, and limit their usage.
