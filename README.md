@@ -30,9 +30,11 @@ In some circumstances, when you introduced a marcro, it is likely you'll need a 
 
 Extra cache zone for certain user(s). By specifying a `superiorcacheid`, it will save the latest success output automatically, and provide the result directly to users next time they request for the exact same thing(aka. identical `superiorcacheid`).
 
-The superiorcache can be managed(list, delete) easily.
+Superiorcache can be managed(list, delete) easily. See also [Calling the API -- superiorcache](#superiorcache).
 
 `superiorcacheid` can't contain illegal characters(i.e. `/?.\@#$&()|:*;<>"`).
+
+You can access to superiorcache without leaking your token and superiorcacheid by calling the API directly using the UID of the cached SVG, see also [Calling the API -- superiorcache](#superiorcache).
 
 ## User control
 
@@ -56,13 +58,11 @@ method: GET
 |`twicecompile`|bool|(OPTIONAL)for some circumstances that requires a second compilation. (e.g. macro, polymer) False by default.|
 |`superiorcacheid`|str|(OPTIONAL)the unique "name" to the SVG when caching the superior users' SVG file.(explanation witten bellow)|
 
-### result:
-
-#### success:
+### success:
 
 `latexout.svg`
 
-#### failure:
+### failure:
 - `{"error": "Unauthorised"}`: token not recognised. plz configure in `user.json`.
 - `{"error": "InsufficientUsage"}`: the token you were using is out of usage. plz re-configure `maxusage` in `user.json`.
 - `{"error": "LaTeXCompileFault"}`: your LaTeX stynex has something wrong. details are given below.
@@ -97,7 +97,9 @@ result:
 
 ## `"/superiorcache"`
 
-For debug only. Operate superiorcache by calling it.
+Operate superiorcache by calling it with query parameters, and access UID superiorcache by calling it with path parameters.
+
+### query parameters
 
 method: GET
 
@@ -106,22 +108,33 @@ method: GET
 |`token`|str|a string to distinguish different users, plz configure it in `user.json`.|
 |`action`|str|`list` or `delete`. `list` will return a table showing all your superiorcache; `delete` is not completed yet. plz stay tuned.|
 
-## success: `action=list`
+#### success: `action=list`
 
 List all available superiorchache in a web page.
 
-## success: `action=delete`
+#### success: `action=delete`
 
 delete a certain superiorcache and return: `{"success": "FileDeleted example.svg"}`
 
-## failure:
+#### failure:
 - `{"error": "Unauthorised"}`: token not recognized. plz configure in `user.json`.
 - `{"error": "InsufficientUsage"}`: the token you were using is out of usage. plz re-configure `maxusage` in `user.json`.
 - `{"error": "InvalidAction"}`: action you requested is not on the support list, plz check your spellings.
 - `{"error": "DeletionFailed"}`: can't delete a certain superiorcache, idk why. (maybe permission reason?)
 - `{"error": "FileNotFound"}`: the `superiorcacheid` you requested does not exist. plz check your spellings.
 
+### path parameters
 
+access your SVG by passing in UID, for instance:
+
+```
+https://www.example.com:4000/superiorcache/d2b521cdad6799c342414a76eb1f06eb.svg
+```
+`d2b521cdad6799c342414a76eb1f06eb` is the UID of the SVG image, you can acquire it in the SVG list(replace `gzgz` with your own token):
+
+```
+https://www.example.com:4000/superiorcache?token=gzgz&action=list
+```
 # deploy
 
 install [xelatex](https://tug.org/texlive/) and [pdf2svg](https://github.com/dawbarton/pdf2svg).
