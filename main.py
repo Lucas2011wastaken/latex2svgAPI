@@ -7,6 +7,7 @@ import time
 import json
 import subprocess
 import re
+import hashlib
 
 app = FastAPI()
 
@@ -27,6 +28,21 @@ def IsIDValid(id:str):
         return False
     else:
         return True
+    
+def MD5Mapping(token:str):
+    UIDsum = set()
+    for file in os.listdir(f"superiorcache/{token}"):
+        match = re.match(r'^(.*?)\.svg', file)
+        if match:
+            temp_superiorcacheid = match.group(1)       
+            UIDsum.add(f"{token}nTRBPG{temp_superiorcacheid}")
+
+    md5_to_text = {}
+    for text in UIDsum:
+        # 计算哈希并统一转为小写存储
+        hash_key = hashlib.md5(text.encode('utf-8')).hexdigest().lower()
+        md5_to_text[hash_key] = text
+    return md5_to_text
 
 @app.get("/")
 async def main(token:str = "",superiorcacheid:str = "",twicecompile:bool = False,latex:str = "\\LaTeX",border:float = 0):
@@ -134,7 +150,7 @@ async def main(token:str = "",superiorcacheid:str = "",twicecompile:bool = False
     return FileResponse(output_path, media_type="image/svg+xml")
 
 @app.get("/superiorcache")
-async def get_superior_cache(action:str = "", token:str = "", superiorcacheid:str = ""):
+async def modify_superior_cache(action:str = "", token:str = "", superiorcacheid:str = ""):
     #读取用户列表
     with open("user.json","r") as file:
         userjson = json.load(file)
@@ -185,12 +201,18 @@ async def get_superior_cache(action:str = "", token:str = "", superiorcacheid:st
     <body>
         <h2>SVG Files under <code>{token}</code></h2>
         <table>
-            <tr><th>SuperiorCacheID</th><th>Preview</th></tr>"""
+            <tr><th>SuperiorCacheID</th><th>UID</th><th>Preview</th></tr>"""
 
     # 检查目录是否存在以及是否为空目录
         if (not os.path.exists("superiorcache/" + token)) or len(os.listdir("superiorcache/" + token)) == 0:
-            html_content += "<tr><td colspan='2'>No SVG files found</td></tr>"
+            html_content += "<tr><td colspan='3'>No SVG files found</td></tr>"
         else:
+            UIDsum = MD5Mapping(token)
+            if not os.path.exists(f"superiorcache/{token}/map.json"):
+                os.system("touch " + f"superiorcache/{token}/map.json")
+            with open(f"superiorcache/{token}/map.json","w") as file:
+                json.dump(UIDsum,file,indent=4)
+
             for file in os.listdir(f"superiorcache/{token}"):
                 match = re.match(r'^(.*?)\.svg', file)
                 if match:
@@ -198,6 +220,7 @@ async def get_superior_cache(action:str = "", token:str = "", superiorcacheid:st
                     html_content += f"""
             <tr>
                 <td>{temp_superiorcacheid}</td>
+                <td><a href="/superiorcache/{hashlib.md5((token+"nTRBPG"+temp_superiorcacheid).encode('utf-8')).hexdigest().lower()}.svg">{hashlib.md5((token+"nTRBPG"+temp_superiorcacheid).encode('utf-8')).hexdigest().lower()}</a></td>
                 <td><img src="/?token={token}&superiorcacheid={temp_superiorcacheid}"></td>
             </tr>"""
         html_content += """</table></body></html>"""
@@ -214,6 +237,30 @@ async def get_superior_cache(action:str = "", token:str = "", superiorcacheid:st
                 return {"error": "DeletionFailed"}
         else:
             return {"error": "FileNotFound"}
+
+@app.get("/superiorcache/{UID_svg}")
+async def get_superior_cache(UID_svg:str):
+    match = re.match(r'^(.*?)\.svg', UID_svg)
+    if match:
+        UID = match.group(1)
+    else:
+        return {"error": "InvalidUID"}
+
+    for temp_token in os.listdir("superiorcache"):
+        if os.path.exists(f"superiorcache/{temp_token}/map.json"):
+            with open(f"superiorcache/{temp_token}/map.json","r") as file:
+                loadedmap = json.load(file)
+            tokenSid = loadedmap.get(UID.lower()) # token + 盐 + superiorcacheid
+            if tokenSid != None:
+                break
+    if tokenSid == None:
+        return {"error": "InvalidUID"}
+    token, salt, superiorcacheid = tokenSid.partition("nTRBPG")
+    if salt != "nTRBPG":
+        return {"error": "InvalidUID"}
+    if not os.path.exists(f"superiorcache/{token}/{superiorcacheid}.svg"):
+        return {"error": "File not found"}
+    return FileResponse(f"superiorcache/{token}/{superiorcacheid}.svg", media_type="image/svg+xml")
 
 # 启动 FastAPI 应用程序
 if __name__ == "__main__":
