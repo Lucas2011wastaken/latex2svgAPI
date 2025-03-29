@@ -1,6 +1,5 @@
-from curses.ascii import isblank
-from fastapi import FastAPI, Response
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, Response, HTTPException, Request
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import time
@@ -57,10 +56,10 @@ async def main(token:str = "",superiorcacheid:str = "",twicecompile:bool = False
     allusertoken = list(userjson.keys())
 
     if not token in allusertoken:
-        return {"error": "Unauthorised"}
+        raise HTTPException(status_code=401, detail="Unauthorised")
     
     if int(userjson[token]["maxusage"]) != -1 and int(userjson[token]["currentusage"]) > int(userjson[token]["maxusage"]):
-        return {"error": "InsufficientUsage"}
+        raise HTTPException(status_code=403, detail="InsufficientUsage")
 
     # 为superior用户调用superiorcache
     if userjson[token]["superior"] == True and IsIDValid(superiorcacheid):
@@ -100,13 +99,15 @@ async def main(token:str = "",superiorcacheid:str = "",twicecompile:bool = False
         os.chdir("..")
         os.chdir("..")
         matches = re.findall(r'\n(!.*?)\n', e.stdout)
-        
-        error_details = {
+        return JSONResponse(
+        status_code=400,
+        content={
         "error": "LaTeXCompileFault",
         "returncode": e.returncode,
         "detail": "\n".join(matches)
         }
-        return error_details
+        )
+    
     # 二次编译（如果需要）
     if twicecompile == True:
         try:
@@ -123,13 +124,14 @@ async def main(token:str = "",superiorcacheid:str = "",twicecompile:bool = False
             os.chdir("..")
             os.chdir("..")
             matches = re.findall(r'\n(!.*?)\n', e.stdout)
-        
-            error_details = {
+            return JSONResponse(
+            status_code=400,
+            content={
             "error": "LaTeXCompileFault",
             "returncode": e.returncode,
             "detail": "\n".join(matches)
             }
-            return error_details
+        )
     os.chdir("..")
     os.chdir("..")
     
@@ -146,7 +148,7 @@ async def main(token:str = "",superiorcacheid:str = "",twicecompile:bool = False
     # 输出svg
     output_path = current_folder + "/latexoutput.svg"
     if not os.path.isfile(output_path):
-        return {"error": "File not found"}
+        raise HTTPException(status_code=404, detail="FileNotFound")
     return FileResponse(output_path, media_type="image/svg+xml")
 
 @app.get("/superiorcache")
@@ -159,16 +161,16 @@ async def modify_superior_cache(action:str = "", token:str = "", superiorcacheid
 
     # 检查用户是否注册
     if (not token in allusertoken) or userjson[token]["superior"] != True:
-        return {"error": "Unauthorised"}
+        raise HTTPException(status_code=401, detail="Unauthorised")
 
     # 检查action是否合法
     valid_action_list = ["list", "delete"]
     if not action in valid_action_list:
-        return {"error": "InvalidAction"}
+        raise HTTPException(status_code=400, detail="InvalidAction")
     
     # 检查并记录使用量
     if int(userjson[token]["maxusage"]) != -1 and int(userjson[token]["currentusage"]) > int(userjson[token]["maxusage"]):
-        return {"error": "InsufficientUsage"}
+        raise HTTPException(status_code=403, detail="InsufficientUsage")
 
     userjson[token]["currentusage"] += 1
 
@@ -234,9 +236,9 @@ async def modify_superior_cache(action:str = "", token:str = "", superiorcacheid
                 error_details = {"success": "FileDeleted " + superiorcacheid + ".svg"}
                 return error_details
             except Exception as e:
-                return {"error": "DeletionFailed"}
+                raise HTTPException(status_code=500, detail="DeletionFailed")
         else:
-            return {"error": "FileNotFound"}
+            raise HTTPException(status_code=404, detail="FileNotFound")
 
 @app.get("/superiorcache/{UID_svg}")
 async def get_superior_cache(UID_svg:str):
@@ -244,7 +246,8 @@ async def get_superior_cache(UID_svg:str):
     if match:
         UID = match.group(1)
     else:
-        return {"error": "InvalidUID"}
+        raise HTTPException(status_code=400, detail="InvalidUID")
+
 
     for temp_token in os.listdir("superiorcache"):
         if os.path.exists(f"superiorcache/{temp_token}/map.json"):
@@ -254,12 +257,14 @@ async def get_superior_cache(UID_svg:str):
             if tokenSid != None:
                 break
     if tokenSid == None:
-        return {"error": "InvalidUID"}
+        raise HTTPException(status_code=400, detail="InvalidUID")
+
     token, salt, superiorcacheid = tokenSid.partition("nTRBPG")
     if salt != "nTRBPG":
-        return {"error": "InvalidUID"}
+        raise HTTPException(status_code=400, detail="InvalidUID")
+
     if not os.path.exists(f"superiorcache/{token}/{superiorcacheid}.svg"):
-        return {"error": "File not found"}
+        raise HTTPException(status_code=404, detail="FileNotFound")
     return FileResponse(f"superiorcache/{token}/{superiorcacheid}.svg", media_type="image/svg+xml")
 
 # 启动 FastAPI 应用程序
@@ -268,3 +273,10 @@ if __name__ == "__main__":
     os.system("mkdir cache")
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=4000)
+
+@app.exception_handler(HTTPException)
+async def custom_http_exception_handler(request: Request, exc: HTTPException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"error": exc.detail}
+    )
