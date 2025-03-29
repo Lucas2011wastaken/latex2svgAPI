@@ -1,5 +1,4 @@
 from curses.ascii import isblank
-from xml.dom import NoModificationAllowedErr
 from fastapi import FastAPI, Response
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,8 +8,6 @@ import json
 import subprocess
 import re
 import hashlib
-
-from more_itertools import partition
 
 app = FastAPI()
 
