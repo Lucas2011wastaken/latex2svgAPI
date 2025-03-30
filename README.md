@@ -171,9 +171,5 @@ python3 main.py
 
 # undone checklist
 
-- [x] CompileTwice: for some circumstances that requires a second compilation. (e.g. macro, polymer)
-- [x] RecordUsage: record the usage for users.
-- [x] Update`README.md`: add a part that demonstrate feature.
-- [x] Finish`/superiorcache?action=delete`: new feture that allows users to manage their superiorcache.
-- [x] Update`README.md`: add a part about `/superiorcache?action=delete`.
-- [ ] TryUserEndCache: it seems that you can do this... I'm not sure. Require more ivestigation.
+- [ ] AddCESupport: support ce when modifying superiorcache.
+- [ ] ~~TryUserEndCache: it seems that you can do this... I'm not sure. Require more ivestigation.~~
