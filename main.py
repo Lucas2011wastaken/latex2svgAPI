@@ -416,11 +416,11 @@ document.getElementById('searchInput').addEventListener('input', function(e) {
   // 获取所有目标复选框
   const checkboxes = document.querySelectorAll('input[name="selected_ids[]"]');
   checkboxes.forEach(checkbox => {
-    // 获取关联的文本
-    const rowText = checkbox.closest('tr').textContent; // 假设复选框在表格行中
-
+    // 定位到复选框所在行，并获取第二列的文本内容
+    const row = checkbox.closest('tr');
+    const secondColumnText = row.querySelector('td:nth-child(2)').textContent.trim();
     // 执行正则匹配
-    if (regex.test(rowText)) {
+    if (regex.test(secondColumnText)) {
       checkbox.checked = true; // 匹配则选中
     } else {
       checkbox.checked = false; // 不匹配则取消选中
