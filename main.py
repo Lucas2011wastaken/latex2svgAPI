@@ -410,7 +410,7 @@ document.getElementById('SelectAll').addEventListener('change', function() {
 // 获取搜索框元素并监听输入事件
 document.getElementById('searchInput').addEventListener('input', function(e) {
   const searchTerm = e.target.value.trim();
-  if (!searchTerm) return;
+  if (!searchTerm) checkboxes.forEach(checkbox => checkbox.checked = false); return;
   const regex = new RegExp(searchTerm, 'i'); // 创建不区分大小写的正则表达式
 
   // 获取所有目标复选框
