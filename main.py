@@ -230,6 +230,8 @@ async def modify_superior_cache(action:str = "", token:str = "", superiorcacheid
         return Response(content=html_content, media_type="text/html")
     elif action == "delete":
         # 判断请求的文件是否存在
+        if not IsIDValid(superiorcacheid):
+            raise HTTPException(status_code=400, detail="InvalidUID")
         if os.path.exists(f"superiorcache/{token}/{superiorcacheid}.svg"):
             try:
                 os.remove(f"superiorcache/{token}/{superiorcacheid}.svg")
