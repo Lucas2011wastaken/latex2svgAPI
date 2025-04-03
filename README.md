@@ -114,6 +114,10 @@ List all available superiorchache in a web page.
 
 #### success: `action=delete`
 
+|Extra Parameter|type|comments|
+|:--:|:--:|:---|
+|`superiorcacheid`|str|the superiorcache you want to delete.|
+
 delete a certain superiorcache and return: `{"success": "FileDeleted example.svg"}`
 
 #### failure:
