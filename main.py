@@ -182,84 +182,9 @@ async def modify_superior_cache(action:str = "", token:str = "", superiorcacheid
         html_content = """<html>
     <head>
         <title>SVG Files List</title>
-<style>
-.result-box {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 15px;
-    background: #f8f9fa;
-}
-
-.live-results {
-    max-height: 300px;
-    overflow-y: auto;
-    margin: 10px 0;
-}
-
-.result-item {
-    padding: 8px;
-    font-family: 'JetBrains Mono';
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.result-item.success {
-    color: #2e7d32;
-    background: #edf7ed;
-}
-
-.result-item.fail {
-    color: #d32f2f;
-    background: #fdecea;
-}
-
-.summary {
-    padding: 12px;
-    border-radius: 4px;
-    margin-top: 15px;
-}
-
-.all-success {
-    background: #e8f5e9;
-    border: 1px solid #c8e6c9;
-}
-
-.has-fail {
-    background: #ffebee;
-    border: 1px solid #ffcdd2;
-}
-
-.progress {
-    color: #666;
-    margin-bottom: 10px;
-    font-size: 0.9em;
-}
-        <style>
-            @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100;src:local("JetBrains Mono Thin"),local("JetBrainsMono-Thin"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Thin.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:100;src:local("JetBrains Mono Thin Italic"),local("JetBrainsMono-ThinItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-ThinItalic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:200;src:local("JetBrains Mono ExtraLight"),local("JetBrainsMono-ExtraLight"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-ExtraLight.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:200;src:local("JetBrains Mono ExtraLight Italic"),local("JetBrainsMono-ExtraLightItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-ExtraLightItalic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:300;src:local("JetBrains Mono Light"),local("JetBrainsMono-Light"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Light.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:300;src:local("JetBrains Mono Light Italic"),local("JetBrainsMono-LightItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-LightItalic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400;src:local("JetBrains Mono Regular"),local("JetBrainsMono-Regular"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Regular.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:400;src:local("JetBrains Mono Italic"),local("JetBrainsMono-Italic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Italic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:500;src:local("JetBrains Mono Medium"),local("JetBrainsMono-Medium"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Medium.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:500;src:local("JetBrains Mono Medium Italic"),local("JetBrainsMono-MediumItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-MediumItalic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:700;src:local("JetBrains Mono Bold"),local("JetBrainsMono-Bold"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Bold.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:700;src:local("JetBrains Mono Bold Italic"),local("JetBrainsMono-BoldItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-BoldItalic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:800;src:local("JetBrains Mono ExtraBold"),local("JetBrainsMono-ExtraBold"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-ExtraBold.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:800;src:local("JetBrains Mono ExtraBold Italic"),local("JetBrainsMono-ExtraBoldItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-ExtraBoldItalic.woff2") format("woff2");font-display:swap}
-            table {border-collapse: collapse; width: 100%;}
-            th:first-child, td:first-child {
-                width: 30px;
-                text-align: center;
-            }
-            th, td {border: 1px solid #ddd; padding: 8px; text-align: left;}
-            tr:nth-child(even) {background-color: #f2f2f2;}
-            img {max-width: 200px; max-height: 200px;}
-            code, tt {
-            padding: .2em .4em;
-            margin: 0;
-            font-size: 85%;
-            background-color: #656c7633;
-            white-space: break-spaces;
-            border-radius: 6px;
-            font-family: 'JetBrains Mono';
-            }
-            .action-bar {
-                margin: 15px 0;
-                text-align: right;
-            }
-        </style>
+    <style>
+        .result-box{border:1px solid #e0e0e0;border-radius:8px;padding:15px;background:#f8f9fa}.live-results{max-height:300px;overflow-y:auto;margin:10px 0}.result-item{padding:8px;font-family:'JetBrains Mono';border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}.result-item.success{color:#2e7d32;background:#edf7ed}.result-item.fail{color:#d32f2f;background:#fdecea}.summary{padding:12px;border-radius:4px;margin-top:15px}.all-success{background:#e8f5e9;border:1px solid #c8e6c9}.has-fail{background:#ffebee;border:1px solid #ffcdd2}.progress{color:#666;margin-bottom:10px;font-size:0.9em}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100;src:local("JetBrains Mono Thin"),local("JetBrainsMono-Thin"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Thin.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:100;src:local("JetBrains Mono Thin Italic"),local("JetBrainsMono-ThinItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-ThinItalic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:200;src:local("JetBrains Mono ExtraLight"),local("JetBrainsMono-ExtraLight"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-ExtraLight.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:200;src:local("JetBrains Mono ExtraLight Italic"),local("JetBrainsMono-ExtraLightItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-ExtraLightItalic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:300;src:local("JetBrains Mono Light"),local("JetBrainsMono-Light"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Light.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:300;src:local("JetBrains Mono Light Italic"),local("JetBrainsMono-LightItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-LightItalic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400;src:local("JetBrains Mono Regular"),local("JetBrainsMono-Regular"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Regular.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:400;src:local("JetBrains Mono Italic"),local("JetBrainsMono-Italic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Italic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:500;src:local("JetBrains Mono Medium"),local("JetBrainsMono-Medium"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Medium.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:500;src:local("JetBrains Mono Medium Italic"),local("JetBrainsMono-MediumItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-MediumItalic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:700;src:local("JetBrains Mono Bold"),local("JetBrainsMono-Bold"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-Bold.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:700;src:local("JetBrains Mono Bold Italic"),local("JetBrainsMono-BoldItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-BoldItalic.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:800;src:local("JetBrains Mono ExtraBold"),local("JetBrainsMono-ExtraBold"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-ExtraBold.woff2") format("woff2");font-display:swap}@font-face{font-family:'JetBrains Mono';font-style:italic;font-weight:800;src:local("JetBrains Mono ExtraBold Italic"),local("JetBrainsMono-ExtraBoldItalic"),url("//cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/fonts/webfonts/JetBrainsMono-ExtraBoldItalic.woff2") format("woff2");font-display:swap}table{border-collapse:collapse;width:100%}th:first-child,td:first-child{width:30px;text-align:center}th,td{border:1px solid #ddd;padding:8px;text-align:left}tr:nth-child(even){background-color:#f2f2f2}img{max-width:200px;max-height:200px}code,tt{padding:.2em .4em;margin:0;font-size:85%;background-color:#656c7633;white-space:break-spaces;border-radius:6px;font-family:'JetBrains Mono'}.action-bar{margin:15px 0;text-align:right}
+    </style>
     </head>"""
         html_content += f"""
     <body>
@@ -297,137 +222,140 @@ async def modify_superior_cache(action:str = "", token:str = "", superiorcacheid
                 <td><img src="/?token={token}&superiorcacheid={temp_superiorcacheid}"></td>
             </tr>"""
         html_content += """<script>
-document.querySelector('form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    // 从当前页面URL获取参数
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
-    
-    // 参数校验
-    if (!token) {
-        alert('token获取失败，请重新进入页面');
-        return;
-    }
+    document.querySelector('form').addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    // 获取选中的ID列表
-    const selected = Array.from(document.querySelectorAll('input[name="selected_ids[]"]:checked'))
-        .map(checkbox => checkbox.value);
+        // 从当前页面URL获取参数
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
 
-    if (selected.length === 0) {
-        alert('请至少选择一项');
-        return;
-    }
+        // 参数校验
+        if (!token) {
+            alert('token获取失败，请重新进入页面');
+            return;
+        }
 
-    if (!confirm(`确定要删除选中的 ${selected.length} 个项目吗？`)) return;
+        // 获取选中的ID列表
+        const selected = Array.from(document.querySelectorAll('input[name="selected_ids[]"]:checked'))
+            .map(checkbox => checkbox.value);
 
-    // 创建结果容器
-    const resultDiv = document.createElement('div');
-    resultDiv.id = 'delete-results';
-    resultDiv.style.margin = '15px 0';
-    document.querySelector('.action-bar').after(resultDiv);
+        if (selected.length === 0) {
+            alert('请至少选择一项');
+            return;
+        }
 
-    // 显示加载状态
-    resultDiv.innerHTML = `
+        if (!confirm(`确定要删除选中的 ${selected.length} 个项目吗？`)) return;
+
+        // 创建结果容器
+        const resultDiv = document.createElement('div');
+        resultDiv.id = 'delete-results';
+        resultDiv.style.margin = '15px 0';
+        document.querySelector('.action-bar').after(resultDiv);
+
+        // 显示加载状态
+        resultDiv.innerHTML = `
         <div class="result-box">
             <div class="progress">Processing... <span id="progress">0/${selected.length}</span></div>
             <div id="live-results" class="live-results"></div>
         </div>
     `;
 
-    const liveResults = document.getElementById('live-results');
-    const progressSpan = document.getElementById('progress');
+        const liveResults = document.getElementById('live-results');
+        const progressSpan = document.getElementById('progress');
 
-    // 存储所有请求结果
-    const results = [];
+        // 存储所有请求结果
+        const results = [];
 
-    // 逐个发送删除请求
-    for (const [index, cacheId] of selected.entries()) {
-        const requestUrl = `/superiorcache?token=${token}&action=delete&superiorcacheid=${encodeURIComponent(cacheId)}`;
-        
-        try {
-            const startTime = Date.now();
-            const response = await fetch(requestUrl);
-            const result = await response.json();
-            
-            const success = response.ok && result.success;
-            const duration = Date.now() - startTime;
-            
-            results.push({
-                cacheId,
-                success,
-                duration,
-                message: result.success || result.error
-            });
+        // 逐个发送删除请求
+        for (const [index, cacheId] of selected.entries()) {
+            const requestUrl = `/superiorcache?token=${token}&action=delete&superiorcacheid=${encodeURIComponent(cacheId)}`;
 
-            // 实时显示结果
-            liveResults.innerHTML += `
+            try {
+                const startTime = Date.now();
+                const response = await fetch(requestUrl);
+                const result = await response.json();
+
+                const success = response.ok && result.success;
+                const duration = Date.now() - startTime;
+
+                results.push({
+                    cacheId,
+                    success,
+                    duration,
+                    message: result.success || result.error
+                });
+
+                // 实时显示结果
+                liveResults.innerHTML += `
                 <div class="result-item ${success ? 'success' : 'fail'}">
                     <code>${cacheId}</code>
                     <span title="${result.success || result.error}">${success ? '✓' : '✗'} <code>(${duration}ms)</code></span>
                 </div>
             `;
 
-            // 删除成功则移除行
-            if (success) {
-                document.querySelector(`input[value="${cacheId}"]`).closest('tr').style.opacity = '0.5';
-                setTimeout(() => {
-                    document.querySelector(`input[value="${cacheId}"]`).closest('tr').remove();
-                }, 500);
-            }
-        } catch (error) {
-            results.push({
-                cacheId,
-                success: false,
-                message: `网络异常：${error.message}`
-            });
-            liveResults.innerHTML += `
+                // 删除成功则移除行
+                if (success) {
+                    document.querySelector(`input[value="${cacheId}"]`).closest('tr').style.opacity = '0.5';
+                    setTimeout(() => {
+                        document.querySelector(`input[value="${cacheId}"]`).closest('tr').remove();
+                    }, 500);
+                }
+            } catch (error) {
+                results.push({
+                    cacheId,
+                    success: false,
+                    message: `网络异常：${error.message}`
+                });
+                liveResults.innerHTML += `
                 <div class="result-item fail">
                     <code>${cacheId}</code>
                     <span>✗ ${result.success || result.error || error.message}请求失败</span>
                 </div>
             `;
+            }
+            // 更新进度
+            progressSpan.textContent = `${index + 1}/${selected.length}`;
+            liveResults.scrollTop = liveResults.scrollHeight;
         }
-        // 更新进度
-        progressSpan.textContent = `${index + 1}/${selected.length}`;
-        liveResults.scrollTop = liveResults.scrollHeight;
-    }
 
-    // 显示最终统计
-    const successCount = results.filter(r => r.success).length;
-    resultDiv.innerHTML += `
+        // 显示最终统计
+        const successCount = results.filter(r => r.success).length;
+        resultDiv.innerHTML += `
         <div class="summary ${successCount === selected.length ? 'all-success' : 'has-fail'}">
             ${selected.length} task(s) done, ${successCount} success, ${selected.length - successCount} failure.
         </div>
     `;
-});
+    });
 
-// 全选功能
-document.getElementById('SelectAll').addEventListener('change', function() {
-    const checkboxes = document.querySelectorAll('input[name="selected_ids[]"]');
-    checkboxes.forEach(checkbox => checkbox.checked = this.checked);
-});
-// 获取搜索框元素并监听输入事件
-document.getElementById('searchInput').addEventListener('input', function(e) {
-  const searchTerm = e.target.value.trim();
-  if (!searchTerm) checkboxes.forEach(checkbox => checkbox.checked = false); return;
-  const regex = new RegExp(searchTerm, 'i'); // 创建不区分大小写的正则表达式
-
-  // 获取所有目标复选框
-  const checkboxes = document.querySelectorAll('input[name="selected_ids[]"]');
-  checkboxes.forEach(checkbox => {
-    // 定位到复选框所在行，并获取第二列的文本内容
-    const row = checkbox.closest('tr');
-    const secondColumnText = row.querySelector('td:nth-child(2)').textContent.trim();
-    // 执行正则匹配
-    if (regex.test(secondColumnText)) {
-      checkbox.checked = true; // 匹配则选中
-    } else {
-      checkbox.checked = false; // 不匹配则取消选中
-    }
-  });
-});
-</script></table></form></body></html>"""
+    // 全选功能
+    document.getElementById('SelectAll').addEventListener('change', function () {
+        const checkboxes = document.querySelectorAll('input[name="selected_ids[]"]');
+        checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+    });
+    // 获取搜索框元素并监听输入事件
+    document.getElementById('searchInput').addEventListener('input', function (e) {
+        // 获取所有目标复选框
+        const checkboxes = document.querySelectorAll('input[name="selected_ids[]"]');
+        const searchTerm = e.target.value.trim();
+        if (!searchTerm) { checkboxes.forEach(checkbox => checkbox.checked = false); return; }
+        const regex = new RegExp(searchTerm, 'i'); // 创建不区分大小写的正则表达式
+        checkboxes.forEach(checkbox => {
+            // 定位到复选框所在行，并获取第二列的文本内容
+            const row = checkbox.closest('tr');
+            const secondColumnText = row.querySelector('td:nth-child(2)').textContent.trim();
+            // 执行正则匹配
+            if (regex.test(secondColumnText)) {
+                checkbox.checked = true; // 匹配则选中
+            } else {
+                checkbox.checked = false; // 不匹配则取消选中
+            }
+        });
+    });
+</script>
+</table>
+</form>
+</body>
+</html>"""
 
         return Response(content=html_content, media_type="text/html")
     elif action == "delete":
