@@ -175,5 +175,6 @@ python3 main.py
 
 # undone checklist
 
-- [ ] AddCESupport: support ce when modifying superiorcache.
+- [x] AddCESupport: support ce when modifying superiorcache.
+- [ ] Templatalizing: rewrite `.tex` generate logic and web control pannel `.html` generate logic.
 - [ ] ~~TryUserEndCache: it seems that you can do this... I'm not sure. Require more ivestigation.~~
