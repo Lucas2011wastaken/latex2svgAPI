@@ -177,4 +177,4 @@ python3 main.py
 
 - [x] AddCESupport: support ce when modifying superiorcache.
 - [ ] Templatalizing: rewrite `.tex` generate logic and web control pannel `.html` generate logic.
-- [ ] ~~TryUserEndCache: it seems that you can do this... I'm not sure. Require more ivestigation.~~
+- [ ] MorePlatforms : rewrite some shit that only works on linux
